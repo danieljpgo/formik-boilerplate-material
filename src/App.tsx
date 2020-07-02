@@ -25,32 +25,48 @@ const CustomRadio: React.FC<CustomRadioProps> = ({ label, ...props }) => {
   );
 };
 
+const CustomTextField: React.FC<FieldAttributes<{}>> = ({ placeholder, ...props }) => {
+  const [field, meta] = useField<{}>(props);
+  const errorText = meta.error && meta.touched ? meta.error : '';
+
+  return (
+    <TextField
+      {...field}
+      placeholder={placeholder}
+      helperText={errorText}
+    />
+  );
+};
+
 const App: React.FC = () => (
   <div>
     <Formik
       initialValues={{
-        firstName: 'Bob', age: false, options: [], sex: '',
+        firstName: 'Bob',
+        age: false,
+        options: [],
+        sex: '',
+      }}
+      validate={(values) => {
+
       }}
       onSubmit={(data, { setSubmitting }) => {
-        setSubmitting(true);
-        // Async call
         console.log('submit:', data);
-        setSubmitting(false);
+        // setSubmitting(true);
+        // Async call
+        // setSubmitting(false);
       }}
     >
       {({
-        values, handleChange, handleBlur, handleSubmit,
+        values, errors, handleChange, handleBlur, handleSubmit,
       }) => (
         <Form onSubmit={handleSubmit}>
 
           <div>
-            <input
-              id="firstName"
+            <CustomTextField
+              placeholder="First Name"
               name="firstName"
-              type="text"
-              value={values.firstName}
-              onChange={handleChange}
-              onBlur={handleBlur}
+              type="input"
             />
           </div>
           <div>
@@ -114,6 +130,7 @@ const App: React.FC = () => (
           </div>
           <button type="submit">Submit</button>
           <pre>{ JSON.stringify(values, null, 2) }</pre>
+          <pre>{ JSON.stringify(errors, null, 2) }</pre>
         </Form>
 
       )}
