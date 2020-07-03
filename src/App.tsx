@@ -5,17 +5,18 @@ import {
   Form,
   useField,
   FieldAttributes,
+  FieldArray,
 } from 'formik';
 import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import * as yup from 'yup';
 
 type CustomRadioProps = { label: string } & FieldAttributes<{}>
 
 const CustomRadio: React.FC<CustomRadioProps> = ({ label, ...props }) => {
   const [field] = useField<{}>(props);
-  console.log(field.checked);
   return (
     <FormControlLabel
       {...field}
@@ -34,9 +35,17 @@ const CustomTextField: React.FC<FieldAttributes<{}>> = ({ placeholder, ...props 
       {...field}
       placeholder={placeholder}
       helperText={errorText}
+      error={!!errorText}
     />
   );
 };
+
+const validationSchema = yup.object({
+  firstName: yup
+    .string()
+    .required()
+    .max(10),
+});
 
 const App: React.FC = () => (
   <div>
@@ -46,15 +55,26 @@ const App: React.FC = () => (
         age: false,
         options: [],
         sex: '',
+        pets: [
+          { type: 'cat', name: 'X' },
+        ],
       }}
-      validate={(values) => {
+      validationSchema={validationSchema}
+      // validate={(values) => {
+      //   const error: Record<string, string> = {};
+      //   if (values.firstName.includes('Bob')) {
+      //     error.firstName = 'no bob';
+      //   }
 
-      }}
-      onSubmit={(data, { setSubmitting }) => {
-        console.log('submit:', data);
-        // setSubmitting(true);
+      //   return error;
+      // }}
+      onSubmit={(data, { setSubmitting, resetForm }) => {
         // Async call
-        // setSubmitting(false);
+        setTimeout(() => {
+          alert('submit');
+          resetForm();
+          setSubmitting(false);
+        }, 3000);
       }}
     >
       {({
@@ -128,6 +148,24 @@ const App: React.FC = () => (
               as={Radio}
             /> */}
           </div>
+
+          {/* <div>
+            <FieldArray name="pets">
+              {(arrayHelpers) => {
+
+                return (
+                <div>
+                  {values.pets.map((pet, index) => (
+                    <div key={pet.name}>
+                      <CustomTextField placeholder="pet name" name={name}/>
+
+                    </div>
+                  ))}
+                </div>
+              )}
+            </FieldArray>
+          </div> */}
+
           <button type="submit">Submit</button>
           <pre>{ JSON.stringify(values, null, 2) }</pre>
           <pre>{ JSON.stringify(errors, null, 2) }</pre>
