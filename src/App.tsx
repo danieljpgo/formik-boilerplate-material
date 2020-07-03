@@ -11,6 +11,9 @@ import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
 import * as yup from 'yup';
 
 type CustomRadioProps = { label: string } & FieldAttributes<{}>
@@ -56,7 +59,7 @@ const App: React.FC = () => (
         options: [],
         sex: '',
         pets: [
-          { type: 'cat', name: 'X' },
+          { type: 'cat', name: 'X', id: `${Math.random()}` },
         ],
       }}
       validationSchema={validationSchema}
@@ -70,6 +73,7 @@ const App: React.FC = () => (
       // }}
       onSubmit={(data, { setSubmitting, resetForm }) => {
         // Async call
+        setSubmitting(true);
         setTimeout(() => {
           alert('submit');
           resetForm();
@@ -89,14 +93,6 @@ const App: React.FC = () => (
               type="input"
             />
           </div>
-          <div>
-            <Field
-              name="firstName"
-              type="input"
-              as={TextField}
-            />
-          </div>
-
           <div>
             <Field
               name="age"
@@ -149,22 +145,32 @@ const App: React.FC = () => (
             /> */}
           </div>
 
-          {/* <div>
+          <div>
             <FieldArray name="pets">
-              {(arrayHelpers) => {
-
-                return (
+              {(arrayHelpers) => (
                 <div>
                   {values.pets.map((pet, index) => (
-                    <div key={pet.name}>
-                      <CustomTextField placeholder="pet name" name={name}/>
-
+                    <div key={pet.id}>
+                      <CustomTextField placeholder="pet name" name={`pets.${index}.name`} />
+                      <Field type="select" name={`pets.${index}.type`} as={Select}>
+                        <MenuItem value="">Select type</MenuItem>
+                        <MenuItem value="cat">Cat</MenuItem>
+                        <MenuItem value="dog">Dog</MenuItem>
+                      </Field>
                     </div>
                   ))}
+                  <Button onClick={() => arrayHelpers.push({
+                    type: '',
+                    name: '',
+                    id: `${Math.random()}`,
+                  })}
+                  >
+                    add pet
+                  </Button>
                 </div>
               )}
             </FieldArray>
-          </div> */}
+          </div>
 
           <button type="submit">Submit</button>
           <pre>{ JSON.stringify(values, null, 2) }</pre>
