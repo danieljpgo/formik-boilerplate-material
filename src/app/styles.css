@@ -1,0 +1,31 @@
+:root {
+  --unit: 16px;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+.card-container{
+  display: grid;
+  grid-gap: calc(var(--unit) * 2);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.card-container .form-content{
+  padding: var(--unit);
+}
+
+.card-container .code-content{
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  padding: var(--unit);
+}

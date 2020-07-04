@@ -1,0 +1,10 @@
+header{
+  padding: var(--unit);
+  height: 80px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: var(--unit);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

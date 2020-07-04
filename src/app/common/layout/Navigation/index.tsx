@@ -1,17 +1,17 @@
 import React from 'react';
-
-// import { Container } from './styles';
+import Header from '../Header';
+import './styles.css';
 
 const Navigation: React.FC = (props) => {
   const { children } = props;
 
   return (
-    <div>
+    <div className="container">
+      <Header />
       <main>
         {children}
       </main>
     </div>
   );
 };
-
 export default Navigation;

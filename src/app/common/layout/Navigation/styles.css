@@ -1,0 +1,9 @@
+.container{
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 0 calc(var(--unit)*2);
+}
+
+main{
+  height: calc(100vh - 80px);
+}
