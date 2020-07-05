@@ -1,11 +1,19 @@
 import React, { Fragment } from 'react';
-import { FieldProps } from 'formik';
+import { FieldProps, getIn } from 'formik';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
-const MaterialSliderField: React.FC<FieldProps & {
-  label?: string, min?: number, max?: number, marks?: boolean, step?: number
-} > = ({
+interface SliderProps {
+  label?: string,
+  min?: number,
+  max?: number,
+  marks?: boolean,
+  step?: number,
+  valueLabelDisplay: 'auto' | 'on'
+}
+// @TODO Melhorar com um exemplo real
+const MaterialSliderField: React.FC<FieldProps & SliderProps> = ({
   field,
   form,
   label,
@@ -13,28 +21,38 @@ const MaterialSliderField: React.FC<FieldProps & {
   max,
   step,
   marks,
+  valueLabelDisplay,
   ...props
-}) => (
-  <Fragment>
-    {/* @TODO Melhorar como é exibido os labels  */}
-    <Typography>{label}</Typography>
-    <Slider
-      min={min}
-      max={max}
-      marks={marks}
-      step={step}
-      value={field.value}
-      onChange={(event, value) => form.setFieldValue(field.name, value)}
-      {...props}
-    />
-  </Fragment>
-);
+}) => {
+  const errorText = (
+    getIn(form.errors, field.name)
+  );
+
+  return (
+    <Fragment>
+      {/* @TODO Melhorar como é exibido os labels  */}
+      <Typography>{label}</Typography>
+      <Slider
+        min={min}
+        max={max}
+        marks={marks}
+        step={step}
+        value={field.value}
+        valueLabelDisplay={valueLabelDisplay}
+        onChange={(event, value) => form.setFieldValue(field.name, value)}
+        {...props}
+      />
+      <FormHelperText>{errorText}</FormHelperText>
+    </Fragment>
+  );
+};
 
 MaterialSliderField.defaultProps = {
   min: 0,
   max: 100,
   marks: false,
   step: 1,
+  valueLabelDisplay: 'auto',
 };
 
 export default MaterialSliderField;

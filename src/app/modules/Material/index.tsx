@@ -22,7 +22,6 @@ export default Material;
 // import TextField from '@material-ui/core/TextField';
 // import Radio from '@material-ui/core/Radio';
 // import Checkbox from '@material-ui/core/Checkbox';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Select from '@material-ui/core/Select';
 // import MenuItem from '@material-ui/core/MenuItem';
 // import Button from '@material-ui/core/Button';
